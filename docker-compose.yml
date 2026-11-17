@@ -1,0 +1,77 @@
+# HostAnywhere self-host — control plane + tunnels relay + WireGuard hub.
+#
+# Quick start (full guide in README.md):
+#   1. cp .env.example .env    # set DOMAIN + JWT_SECRET (openssl rand -hex 32)
+#   2. DNS: A records for <domain>, *.<domain>, relay.<domain> → this host
+#   3. docker compose up -d
+#   4. open https://<domain> → sign in (magic link prints to:
+#      docker compose logs -f control) — the first account is yours.
+
+services:
+  control:
+    image: ghcr.io/hostanywhere/hostanywhere-control:${HA_VERSION:-latest}
+    restart: unless-stopped
+    environment:
+      SELF_HOST: "1"
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env}
+      BASE_URL: https://${DOMAIN}
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env (openssl rand -hex 32)}
+      DB_PATH: /data/hostanywhere.db
+      PORT: "4000"
+      RELAY_ENDPOINT: "relay.${DOMAIN}:51820"
+      # Lets the relay container register itself with the control plane.
+      RELAY_REGISTER_SECRET: ${JWT_SECRET}
+      # Email is optional: without SMTP_* vars, magic links print to this
+      # container's log (docker compose logs -f control).
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      FROM_EMAIL: ${FROM_EMAIL:-}
+    volumes:
+      - ha_data:/data
+      - wg_keys:/etc/wireguard   # relay-hub keypair (generated on first boot)
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      net.ipv4.ip_forward: "1"
+    ports:
+      - "51820:51820/udp"        # WireGuard relay hub
+
+  relay:
+    image: ghcr.io/hostanywhere/hostanywhere-relay:${HA_VERSION:-latest}
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN}
+      AUTH_SECRET: ${JWT_SECRET}
+      VISITOR_PORT: "8080"
+      AGENT_PORT: "7443"
+      # Self-registration with the control plane: keeps this relay listed in
+      # /api/relays. Internal URL — Caddy isn't needed.
+      CONTROL_URL: http://control:4000
+      RELAY_REGISTER_SECRET: ${JWT_SECRET}
+      RELAY_NAME: main
+      RELAY_REGION: default
+      RELAY_PUBLIC_HOST: relay.${DOMAIN}
+    ports:
+      - "7443:7443"           # agent tunnel connections (TLS; see README)
+
+  caddy:
+    image: caddy:2.8
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      DOMAIN: ${DOMAIN}
+
+volumes:
+  ha_data:      # SQLite DB — holds escrowed backup keys; BACK THIS UP (see README)
+  wg_keys:
+  caddy_data:
+  caddy_config:

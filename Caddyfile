@@ -1,0 +1,16 @@
+# Dashboard + API at the apex; every subdomain proxies to the tunnels relay.
+#
+# NOTE on the wildcard: *.{$DOMAIN} needs a DNS-challenge certificate. Either
+# run your DNS at a provider with a Caddy DNS module (build caddy with it and
+# add the `tls { dns ... }` block below), or front this host with a proxy that
+# brings its own wildcard (e.g. Cloudflare). Per-service certs via HTTP-01
+# also work if you prefer explicit host blocks over the wildcard.
+
+{$DOMAIN} {
+	reverse_proxy control:4000
+}
+
+*.{$DOMAIN} {
+	# tls { dns <provider> <token> }   # ← enable with your DNS provider
+	reverse_proxy relay:8080
+}
