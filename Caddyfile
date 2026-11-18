@@ -13,7 +13,13 @@
 }
 
 {$DOMAIN} {
-	reverse_proxy control:4000
+	# WG-over-WebSocket fallback for devices on UDP-blocked networks.
+	handle /ha-relay {
+		reverse_proxy control:51823
+	}
+	handle {
+		reverse_proxy control:4000
+	}
 }
 
 # Explicit block so Caddy obtains a dedicated certificate for the relay host
