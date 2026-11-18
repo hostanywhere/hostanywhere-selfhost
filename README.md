@@ -152,6 +152,15 @@ docker compose pull && docker compose up -d
 
 The database migrates itself on boot. Take a DB backup first (see above).
 
+## License
+
+Free for personal use and internal business use — no device, user, or
+feature limits. Offering HostAnywhere to others (managed hosting for
+clients, resale, bundling) needs a commercial agreement — see
+[LICENSE](LICENSE) or write to hostanywhere.io@gmail.com. The
+[hostanywhere-recover](https://github.com/hostanywhere/hostanywhere-recover)
+tool is MIT-licensed so your exit path never depends on these terms.
+
 ## Support
 
 This is a beta. Issues and questions: the contact options at

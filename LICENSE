@@ -1,0 +1,75 @@
+HostAnywhere Self-Hosted License
+Version 1.0, November 2026
+
+This license governs the HostAnywhere Self-Hosted software: the server
+container images published under ghcr.io/hostanywhere/* and the
+configuration files in this repository (together, "the Software").
+It does not cover the hostanywhere-recover tool, which is separately
+licensed under the MIT License, or the HostAnywhere client applications,
+which are distributed under their own terms.
+
+1. FREE USE
+
+   You may download, install, run, and operate the Software, free of
+   charge, with no limits on devices, users, or features, for:
+
+   a. Personal use — running it for yourself, your family, or your
+      household; and
+
+   b. Internal business use — an organization running it for its own
+      employees, contractors, and internal systems.
+
+   You may modify the configuration files in this repository for your own
+   deployment, and you may inspect the contents of the container images.
+
+2. WHAT REQUIRES A COMMERCIAL AGREEMENT
+
+   The following require a separate written agreement with HostAnywhere
+   (contact: hostanywhere.io@gmail.com):
+
+   a. Offering the Software to third parties as a hosted or managed
+      service (for example, running HostAnywhere servers for clients,
+      whether or not for a fee);
+
+   b. Selling, reselling, licensing, or bundling the Software, or any
+      derivative of it, as part of your own product or service offering;
+
+   c. Redistributing the container images, or modified versions of them,
+      outside your own organization.
+
+3. OWNERSHIP AND TRADEMARKS
+
+   The Software is licensed, not sold. HostAnywhere retains all right,
+   title, and interest in the Software. "HostAnywhere" and the
+   HostAnywhere logo are trademarks of HostAnywhere; this license grants
+   no trademark rights beyond using the name to truthfully identify the
+   software you are running.
+
+4. THIRD-PARTY COMPONENTS
+
+   The container images include open-source components, each governed by
+   its own license. Nothing in this license restricts rights granted to
+   you by those licenses.
+
+5. NO WARRANTY
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+   NONINFRINGEMENT. YOU ARE RESPONSIBLE FOR YOUR OWN DEPLOYMENT,
+   INCLUDING SECURITY, BACKUPS, AND COMPLIANCE.
+
+6. LIMITATION OF LIABILITY
+
+   IN NO EVENT SHALL HOSTANYWHERE BE LIABLE FOR ANY CLAIM, DAMAGES, OR
+   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR
+   OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE
+   OR ITS USE.
+
+7. TERMINATION
+
+   This license terminates automatically if you breach it. On
+   termination you must stop using the Software, except that data you
+   exported or backed up remains yours, and the separately licensed
+   hostanywhere-recover tool remains available to you for restoring
+   your own data.
