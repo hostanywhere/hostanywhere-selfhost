@@ -87,10 +87,9 @@ server:
      device" page that opens has *Advanced: use a self-hosted server* — enter
      `https://<domain>` there, then sign in.
   2. **Windows fleet installs:**
-     `msiexec /i HostAnywhere-setup-<ver>.msi HACONTROL=https://<domain>`
-     (also accepted by the .exe installer: `HostAnywhere-setup.exe /silent
-     HACONTROL=https://<domain>`). Sets the server machine-wide; every
-     first-run on that machine then signs in against your server.
+     `HostAnywhere-setup-<ver>.exe /silent HACONTROL=https://<domain>`
+     Sets the server machine-wide; every first-run on that machine then
+     signs in against your server.
   3. **Env var:** `HA_CONTROL=https://<domain>` in the tray's environment, or
      `--control https://<domain>` for the CLI agent.
 
