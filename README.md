@@ -45,6 +45,12 @@ unlocked and there are no device or user caps.
 
 ## Connecting devices
 
+Download the desktop installers and the Android APK from this repo's
+[Releases](https://github.com/hostanywhere/hostanywhere-selfhost/releases)
+page (checksums in `SHA256SUMS.txt`); the iPhone app comes from the App
+Store. They're the same apps hosted users run — you just point them at your
+server:
+
 - **Desktop (Mac/Windows/Linux):** three ways to point the agent at your
   server — pick one:
   1. **First-run page (easiest):** launch the tray app; the "Connect this
