@@ -1,16 +1,31 @@
-# Dashboard + API at the apex; every subdomain proxies to the tunnels relay.
+# Dashboard + API at the apex; service subdomains proxy to the tunnels relay.
 #
-# NOTE on the wildcard: *.{$DOMAIN} needs a DNS-challenge certificate. Either
-# run your DNS at a provider with a Caddy DNS module (build caddy with it and
-# add the `tls { dns ... }` block below), or front this host with a proxy that
-# brings its own wildcard (e.g. Cloudflare). Per-service certs via HTTP-01
-# also work if you prefer explicit host blocks over the wildcard.
+# TLS is fully automatic, no wildcard needed:
+#   - apex + relay.<domain>: ordinary HTTP-01 certificates at startup
+#   - *.<domain> service URLs: per-subdomain certificates issued on demand
+#     the first time each URL is visited. The control plane's /api/tls-ask
+#     endpoint approves only hostnames that belong to this deployment.
+
+{
+	on_demand_tls {
+		ask http://control:4000/api/tls-ask
+	}
+}
 
 {$DOMAIN} {
 	reverse_proxy control:4000
 }
 
+# Explicit block so Caddy obtains a dedicated certificate for the relay host
+# at startup — the relay serves this same cert on its agent port (7443) via
+# the shared caddy_data volume.
+relay.{$DOMAIN} {
+	reverse_proxy relay:8080
+}
+
 *.{$DOMAIN} {
-	# tls { dns <provider> <token> }   # ← enable with your DNS provider
+	tls {
+		on_demand
+	}
 	reverse_proxy relay:8080
 }

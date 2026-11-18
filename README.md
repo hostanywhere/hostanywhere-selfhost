@@ -116,15 +116,18 @@ docker cp "$(docker compose ps -q control)":/data/backup.db ./hostanywhere-$(dat
 
 ## TLS notes
 
-- The apex certificate is automatic (Caddy, HTTP-01).
-- The `*.<domain>` wildcard needs a DNS-challenge certificate: either build
-  Caddy with your DNS provider's module and enable the `tls { dns ... }`
-  line in the Caddyfile, or front this host with a proxy that brings its own
-  wildcard. If you skip the wildcard, the dashboard and mesh work fully —
-  only public service URLs on subdomains need it.
-- Agent tunnel connections use `relay.<domain>:7443` (TLS passthrough isn't
-  proxied by Caddy). Set `relay_addr` accordingly in the desktop agent's
-  config when exposing services.
+Everything is automatic — no wildcard certificate, DNS plugins, or custom
+Caddy builds required:
+
+- The apex and `relay.<domain>` get ordinary HTTP-01 certificates when the
+  stack starts.
+- Each exposed-service URL (`<name>.<domain>`) gets its own certificate on
+  demand, the first time it's visited. The control plane approves issuance
+  only for subdomains that actually exist in this deployment.
+- Agent tunnel connections (`relay.<domain>:7443`) are TLS end-to-end: the
+  relay serves the `relay.<domain>` certificate and picks up renewals
+  automatically. The first tunnel may take a few extra seconds right after
+  initial startup while the certificate is being issued.
 
 ## Networking gotchas (read before filing an issue)
 

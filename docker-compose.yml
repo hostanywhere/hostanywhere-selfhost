@@ -66,6 +66,11 @@ services:
       RELAY_NAME: main
       RELAY_REGION: default
       RELAY_PUBLIC_HOST: relay.${DOMAIN}
+      # Agent connections (7443) are TLS: the relay serves the certificate
+      # Caddy obtains for relay.<domain>, via the shared read-only volume.
+      TLS_CERT_DIR: /caddy-certs
+    volumes:
+      - caddy_data:/caddy-certs:ro
     ports:
       - "7443:7443"           # agent tunnel connections (TLS; see README)
 
