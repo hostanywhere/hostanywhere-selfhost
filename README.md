@@ -17,7 +17,13 @@ HostAnywhere-hosted AI gateway (device-local gateways work).
   - `A  <domain>` — dashboard + API
   - `A  *.<domain>` — public service URLs
   - `A  relay.<domain>` — relay fallback + tunnels
-- Open ports: 80, 443 (TCP), 7443 (TCP), 51820 (UDP).
+- Open ports: 80, 443 (TCP), 7443 (TCP), 51820 (UDP) — in your cloud
+  provider's firewall **and** the OS firewall.
+
+> **Cloudflare DNS users:** create all three records as **DNS only** (grey
+> cloud, not Proxied — Cloudflare's default is Proxied). The server obtains
+> its own TLS certificates and runs WireGuard, neither of which works behind
+> the proxy.
 
 ## Install
 
@@ -42,6 +48,30 @@ docker compose logs -f control | grep -A2 "MAGIC LINK"
 
 The first account you create is yours — in self-host mode every feature is
 unlocked and there are no device or user caps.
+
+## Social sign-in (optional)
+
+Out of the box, sign-in is by email magic link (plus device tokens). The
+Google / GitHub / Microsoft / Apple buttons light up automatically once you
+register your **own** OAuth app with a provider and put its credentials in
+`.env` — all callback URLs are built from your domain, so each provider just
+needs to know it:
+
+| Provider | Create the app at | Callback URL to register | `.env` vars |
+|---|---|---|---|
+| Google | [console.cloud.google.com](https://console.cloud.google.com) → APIs & Services → Credentials → Create OAuth client ID (Web application) | `https://<domain>/auth/callback/google` | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` |
+| GitHub | GitHub → Settings → Developer settings → OAuth Apps → New | `https://<domain>/auth/callback/github` | `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` |
+| Microsoft | [entra.microsoft.com](https://entra.microsoft.com) → App registrations → New (platform: Web; supported accounts: *any org directory + personal accounts*) | `https://<domain>/auth/callback/microsoft` | `MICROSOFT_CLIENT_ID`, `MICROSOFT_CLIENT_SECRET` |
+| Apple | [developer.apple.com](https://developer.apple.com) (paid program) → Services ID + Sign in with Apple key | `https://<domain>/auth/callback/apple` | `APPLE_SERVICE_ID`, `APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_PRIVATE_KEY` |
+
+Then `docker compose up -d` to apply. Notes:
+
+- **Google** shows an "unverified app" interstitial until you complete their
+  verification — fine for personal/team use (click Advanced → Continue).
+- **Microsoft**: the client secret is under *Certificates & secrets* — copy
+  the secret **Value**, not the ID.
+- **Apple** requires the paid developer program and domain verification;
+  most self-hosters skip it.
 
 ## Connecting devices
 
