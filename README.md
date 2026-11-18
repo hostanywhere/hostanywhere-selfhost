@@ -5,8 +5,9 @@ your mesh coordination, your backup keys, your dashboard — on hardware you
 control. The hosted service at hostanywhere.io is unaffected by anything here.
 
 **What's included:** device mesh, dashboard, encrypted phone backups,
-storage servers, access control, device-local AI gateways, and public-URL
-tunnels — every feature unlocked, no device or user caps.
+storage servers, access control, AI Server (one-click managed Ollama on
+your devices, with optional Open WebUI), device-local AI gateways, and
+public-URL tunnels — every feature unlocked, no device or user caps.
 **Not included:** billing (there's nothing to bill), enterprise SSO, and the
 HostAnywhere-hosted AI gateway (device-local gateways work).
 
@@ -142,6 +143,16 @@ Caddy builds required:
 - **Ping between two devices proves the mesh; ping *to the hub* may not** —
   the hub forwards peer-to-peer traffic and devices often hole-punch into
   a direct path (check the dashboard's peer view).
+
+- **AI Server on a headless Linux box:** current (1.2.10) Linux daemon
+  builds need `HOME` set in the service environment for the managed Ollama
+  runtime (fixed in the next client release). One-time workaround:
+
+  ```sh
+  sudo mkdir -p /etc/systemd/system/hostanywhere.service.d
+  printf '[Service]\nEnvironment=HOME=/root\n' | sudo tee /etc/systemd/system/hostanywhere.service.d/home.conf
+  sudo systemctl daemon-reload && sudo systemctl restart hostanywhere
+  ```
 
 ## Upgrades
 
