@@ -1,12 +1,13 @@
-# Self-hosted HostAnywhere (beta)
+# Self-hosted HostAnywhere
 
 Run the entire HostAnywhere control plane on your own server: your devices,
 your mesh coordination, your backup keys, your dashboard — on hardware you
 control. The hosted service at hostanywhere.io is unaffected by anything here.
 
-**Beta scope:** device mesh, dashboard, encrypted phone backups, storage
-servers, access control, device-local AI gateways, public-URL tunnels.
-**Not in the beta:** billing (everything is unlocked), SSO, and the
+**What's included:** device mesh, dashboard, encrypted phone backups,
+storage servers, access control, device-local AI gateways, and public-URL
+tunnels — every feature unlocked, no device or user caps.
+**Not included:** billing (there's nothing to bill), enterprise SSO, and the
 HostAnywhere-hosted AI gateway (device-local gateways work).
 
 ## Requirements
@@ -162,6 +163,6 @@ tool is MIT-licensed so your exit path never depends on these terms.
 
 ## Support
 
-This is a beta. Issues and questions: the contact options at
-hostanywhere.io/about — mention "self-host beta". Expect community-level
-support, not the hosted SLA.
+Issues and questions: open a GitHub issue on this repo, or use the contact
+options at hostanywhere.io/about — mention "self-host". Expect
+community-level support, not the hosted SLA.
