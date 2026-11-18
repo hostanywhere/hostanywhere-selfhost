@@ -157,7 +157,7 @@ The database migrates itself on boot. Take a DB backup first (see above).
 Free for personal use and internal business use — no device, user, or
 feature limits. Offering HostAnywhere to others (managed hosting for
 clients, resale, bundling) needs a commercial agreement — see
-[LICENSE](LICENSE) or write to hostanywhere.io@gmail.com. The
+[LICENSE](LICENSE) or write to contact@hostanywhere.io. The
 [hostanywhere-recover](https://github.com/hostanywhere/hostanywhere-recover)
 tool is MIT-licensed so your exit path never depends on these terms.
 
